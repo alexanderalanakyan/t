@@ -1,5 +1,9 @@
 #!/usr/bin/sh
-flatpak install app.zen_browser.zen
+set -euo pipefail
+
+flatpak -y --noninteractive install app.zen_browser.zen
+flatpak -y --noninteractive install flathub com.obsproject.Studio
+flatpak -y --noninteractive install flathub org.libreoffice.LibreOffice
 
 ipac() {
   if output=$(sudo pacman -S --needed --noconfirm "$@" 2>&1); then
@@ -23,8 +27,9 @@ systemctl enable paccache.timer
 systemctl --user enable hyprpolkitagent pipewire pipewire-pulse wireplumber
 
 ipac gnome-keyring
-printf "Gnome Keyring" >>"/home/$1/Notes/apps.txt"
+printf "Gnome Keyring\n" >>"/home/$1/Notes/apps.txt"
 systemctl enable --user --now gcr-ssh-agent.socket
 
 ipac flatseal
-printf "Flatseal" >> "/home/$1/Notes/apps.txt
+printf "Flatseal\n" >> /home/"$1"/Notes/apps.txt
+
