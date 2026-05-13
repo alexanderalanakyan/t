@@ -42,7 +42,10 @@ mkdir -p "$user_home/Notes"
 chown -R "$USERNAME:$USERNAME" "$user_home/Notes"
       
 addtonotes() {
-  
+  for i in "$@"
+  do
+  printf "$i\n" >> "$user_home"/Notes/apps.txt
+  done
 }
 
 mkdir -p "$user_home/Notes"
