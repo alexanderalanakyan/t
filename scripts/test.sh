@@ -36,8 +36,13 @@ fi
 # -------------------------
 user_home="/home/$USERNAME"
 
+mkdir -p "$user_home/Notes"
+: > "$user_home/Notes/apps.txt"
+
+chown -R "$USERNAME:$USERNAME" "$user_home/Notes"
+      
 addtonotes() {
-  echo "$*" >>"$user_home/Notes/apps.txt"
+  
 }
 
 mkdir -p "$user_home/Notes"
