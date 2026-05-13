@@ -25,3 +25,6 @@ systemctl --user enable hyprpolkitagent pipewire pipewire-pulse wireplumber
 ipac gnome-keyring
 printf "Gnome Keyring" >>"/home/$1/Notes/apps.txt"
 systemctl enable --user --now gcr-ssh-agent.socket
+
+ipac flatseal
+printf "Flatseal" >> "/home/$1/Notes/apps.txt
