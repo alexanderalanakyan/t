@@ -130,10 +130,32 @@ ipac scdoc xdg-utils
 addtonotes scdoc
 addtonotes xdg-utils
 
+ipac tuned 
+systemctl enable tuned
+
+addtonotes "tuned"
+
+mkdir -p /etc/modprobe.d
+prinf "blacklist uvcvideo" > /etc/modprobe.d/uvcvideo.conf
+
+printf "[connection]\nwifi.powersave=2\n" > /etc/NetworkManager/conf.d/powersave.conf
+ipac dnsmasq dhcpcd
+printf "\nnoarp\n" >> /etc/dhcpcd.conf
+printf "[main]\ndhcp=dhcpcd\n" > /etc/NetworkManager/conf.d/dhcp-client.conf
+printf "[main]\ndns=dnsmasq\n" > /etc/NetworkManager/conf.d/dns.conf
+addtonotes dnsmasq dhcpcd
+
+ipac nftables
+addtonotes nftables
+systemctl enable nftables
+
+
 # -------------------------
 # Final ownership fix
 # -------------------------
 chown -R "$USERNAME:$USERNAME" "$user_home"
+
+mkinitcpio -P
 
 sleep 5s
 
