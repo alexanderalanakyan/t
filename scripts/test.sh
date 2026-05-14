@@ -40,7 +40,7 @@ ipac() {
 
 addtonotes() {
   for i in "$@"; do
-    printf "%s\n" "$i" >> "$user_home/Notes/apps.txt"
+    sudo -u "$USERNAME" printf "%s\n" "$i" >> "$user_home/Notes/apps.txt"
   done
 }
 
@@ -53,9 +53,8 @@ if ! id "$USERNAME" >/dev/null 2>&1; then
   passwd "$USERNAME"
 fi
 
-mkdir -p "$user_home/Notes"
+sudo -u "$USERNAME" mkdir -p "$user_home/Notes"
 : > "$user_home/Notes/apps.txt"
-chown -R "$USERNAME:$USERNAME" "$user_home"
 
 # -------------------------
 # 1. Base Utilities & Build Tools
@@ -83,9 +82,13 @@ addtonotes yay
 ipac fish zoxide kitty noto-fonts-extra noto-fonts-emoji noto-fonts-cjk ttf-jetbrains-mono-nerd
 addtonotes fish zoxide kitty "Noto Fonts" "JetBrains Nerd"
 
-chsh -s /usr/bin/fish "$USERNAME"
-mkdir -p "$user_home/.config/fish"
+
+sudo -u "$USERNAME" mkdir -p "$user_home/.config/fish"
 echo 'zoxide init fish | source' >> "$user_home/.config/fish/config.fish"
+sudo -u "$USERNAME" curl -fsSL "https://raw.githubusercontent.com/alexanderalanakyan/t/refs/heads/master/fish/config.fish" -o "$user_home/.config/fish/config.fish"
+sudo -u "$USERNAME" curl -fsSL "https://raw.githubusercontent.com/alexanderalanakyan/t/refs/heads/master/fish/functions" -o "$user_home/.config/fish/functions"
+sudo -u "$USERNAME" curl -fsSL "https://raw.githubusercontent.com/alexanderalanakyan/t/refs/heads/master/kitty" -o "$user_home/.config/kitty"
+
 
 # -------------------------
 # 4. Desktop Environment (Hyprland Stack)
@@ -93,8 +96,8 @@ echo 'zoxide init fish | source' >> "$user_home/.config/fish/config.fish"
 ipac hyprland libnotify dunst pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-audio pipewire-jack hyprpolkitagent qt5-wayland qt6-wayland xdg-desktop-portal-hyprland upower
 addtonotes Hyprland Dunst Pipewire Hyprpolkitagent xdg-desktop-portal-hyprland upower
 
-mkdir -p "$user_home/.config/hypr"
-curl -fsSL "https://raw.githubusercontent.com/alexanderalanakyan/t/refs/heads/master/hyprland.lua" -o "$user_home/.config/hypr/hyprland.lua"
+sudo -u "$USERNAME" mkdir -p "$user_home/.config/hypr"
+sudo -u "$USERNAME" curl -fsSL "https://raw.githubusercontent.com/alexanderalanakyan/t/refs/heads/master/hyprland/hyprland.lua" -o "$user_home/.config/hypr/hyprland.lua"
 
 sudo -u "$USERNAME" yay --noconfirm -S vicinae-bin
 addtonotes Vicinae
