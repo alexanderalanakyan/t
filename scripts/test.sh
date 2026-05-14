@@ -1,6 +1,20 @@
 #!/bin/sh
 set -euo pipefail
 
+mkdir -p /etc/sysctl.d
+printf 'vm.swappiness = 180\n
+vm.watermark_boost_factor = 0\n
+vm.watermark_scale_factor = 125\n
+vm.page-cluster = 0' > /etc/sysctl.d/99-vm-zram-parameters.conf
+
+mkdir -p /etc/systemd/
+printf '[zram0]\n
+compression-algorithm = lzo-rle zstd(level=3) (type=idle)' > /etc/systemd/zram-generator.conf
+
+systemctl daemon-reload
+
+systemctl enable systemd-zram-setup@zram0
+
 if [ "$(id -u)" -ne 0 ]; then
   echo "Must be run as root"
   exit 1
