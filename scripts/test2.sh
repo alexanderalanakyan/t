@@ -67,8 +67,7 @@ printf "fd\ntldr\nnnn\nbat\neza\nmcfly\n" >> "$NOTES_FILE"
 # Oh My Posh
 sudo chown -R "$name":"$name" "/home/$name/.config/fish"
 
-# Setup Fish config (only if not already present)
-mkdir -p ~/.config/fish/functions
+
 # Check if oh-my-posh binary exists
 if [ ! -f "$HOME/.local/bin/oh-my-posh" ]; then
     echo "Installing Oh My Posh..."
@@ -78,32 +77,11 @@ else
 fi
 
 
-# Functions
-# Function: b (View with bat + copy to clipboard)
-printf 'function b
-    if set -q argv[1]
-        bat $argv; and cat $argv | wl-copy
-    end
-end' > ~/.config/fish/functions/b.fish
 
-# Function: bc (Binary Copy: copies content silently using bat's plain mode)
-printf 'function bc
-    if set -q argv[1]
-        bat -p $argv | wl-copy
-    end
-end' > ~/.config/fish/functions/bc.fish
-
-# Function: e (eza wrapper for directory listing)
-printf 'function e
-	eza "$argv"
-end' > ~/.config/fish/functions/e.fish
 
 printf '\noh-my-posh init fish --config 'tokyonight_storm' | source' >> ~/.config/fish/config.fish
 printf '\nmcfly init fish | source' >> ~/.config/fish/config.fish
-mkdir -p ~/.config/eza
-printf $(curl https://raw.githubusercontent.com/eza-community/eza-themes/refs/heads/main/themes/tokyonight.yml) >> ~/.config/eza/theme.yml
-sudo chown -R "$name":"$name" "/home/$name/.config/eza"
-sudo chown -R "$name":"$name" "/home/$name/.config/hypr"
+
 
 
 echo 'Setup complete! Please reboot to finalize driver installation. Run "fish_add_path ~/.local/bin".'
