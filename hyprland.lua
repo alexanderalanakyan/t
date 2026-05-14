@@ -26,8 +26,8 @@ hl.monitor({
 ---------------------
 
 -- Set programs that you use
-local terminal = "xfce4-terminal"
-local fileManager = "$terminal -x nnn"
+local terminal = "kitty"
+local fileManager = "$terminal --dump-commands nnn"
 local menu = "vicinae open"
 
 -------------------

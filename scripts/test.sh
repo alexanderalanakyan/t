@@ -80,8 +80,8 @@ addtonotes yay
 # -------------------------
 # 3. Shell, Terminal & Fonts
 # -------------------------
-ipac fish zoxide xfce4-terminal noto-fonts-extra noto-fonts-emoji noto-fonts-cjk ttf-jetbrains-mono-nerd
-addtonotes fish zoxide xfce4-terminal "Noto Fonts" "JetBrains Nerd"
+ipac fish zoxide kitty noto-fonts-extra noto-fonts-emoji noto-fonts-cjk ttf-jetbrains-mono-nerd
+addtonotes fish zoxide kitty "Noto Fonts" "JetBrains Nerd"
 
 chsh -s /usr/bin/fish "$USERNAME"
 mkdir -p "$user_home/.config/fish"

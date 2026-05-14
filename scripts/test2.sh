@@ -36,7 +36,6 @@ sudo systemctl enable pacman-filesdb-refresh.timer
 echo "PACCACHE_ARGS='-k2'" | sudo tee /etc/conf.d/pacman-contrib > /dev/null
 sudo systemctl enable paccache.timer
 
-# Use --now to start them immediately
 systemctl --user enable --now hyprpolkitagent pipewire pipewire-pulse wireplumber
 
 # 6. Auth & Keys
@@ -44,20 +43,27 @@ ipac gnome-keyring libsecret seahorse
 printf "Gnome Keyring\nSeahore\n" >> "$NOTES_FILE"
 systemctl enable --user --now gcr-ssh-agent.socket
 
-# 7. Printing & Network (Avahi is needed for network printers)
+# 7. Printing & Network 
 ipac cups avahi nss-mdns
 printf "CUPS\navahi\n" >> "$NOTES_FILE"
 
-# 8. AUR Packages (Assuming yay is installed)
 
 # 8. AUR Packages
+
 if ! pacman -Qi brother-hl2270dw > /dev/null 2>&1; then
     yay --noconfirm -S brother-hl2270dw
 fi
 
-# 9. More Utils
+if ! pacman -Qi timg > /dev/null 2>&1; then
+	yay --noconfirm -S timg
+fi
+
+# 9. Wallpapers!
+ipac hyprpaper
+# 10. More Utils
 ipac fd tldr nnn tar gzip bzip2 xz zip unzip p7zip curl bat eza mcfly
 printf "fd\ntldr\nnnn\nbat\neza\nmcfly\n" >> "$NOTES_FILE"
+
 # Oh My Posh
 sudo chown -R "$name":"$name" "/home/$name/.config/fish"
 
