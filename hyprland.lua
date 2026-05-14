@@ -26,8 +26,8 @@ hl.monitor({
 ---------------------
 
 -- Set programs that you use
-local terminal = "xfce4_terminal"
-local fileManager = "dolphin"
+local terminal = "xfce4-terminal"
+local fileManager = "$terminal -x nnn"
 local menu = "vicinae open"
 
 -------------------
@@ -43,9 +43,7 @@ hl.on("hyprland.start", function()
 	--   hl.exec_cmd(terminal)
 	--   hl.exec_cmd("nm-applet")
 	--   hl.exec_cmd("waybar & hyprpaper & firefox")
-	hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_RUNTIME_DIR DISPLAY")
 	hl.exec_cmd("udiskie &")
-	hl.exec_cmd("awww-daemon")
 	hl.exec_cmd("vicinae server")
 end)
 
