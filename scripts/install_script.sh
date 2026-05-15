@@ -90,7 +90,7 @@ vm.watermark_scale_factor = 125\n
 vm.page-cluster = 0' > /etc/sysctl.d/99-vm-zram-parameters.conf
 
 printf '[zram0]\n
-compression-algorithm = lzo-rle zstd(level=3) (type=idle)' > /etc/systemd/zram-generator.conf
+compression-algorithm = zstd lzo-rle' > /etc/systemd/zram-generator.conf
 
 systemctl daemon-reload
 
