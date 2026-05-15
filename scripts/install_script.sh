@@ -42,14 +42,23 @@ locale-gen
 echo 'LANG=en_US.UTF-8' > /etc/locale.conf
 echo 'notabene' > /etc/hostname
 
+mkdir -p /etc/modprobe.d
+printf "blacklist uvcvideo\n" > /etc/modprobe.d/uvcvideo.conf
+
+mkdir -p /etc/NetworkManager/conf.d
+printf "[connection]\nwifi.powersave=2\n" > /etc/NetworkManager/conf.d/powersave.conf
+
+sed -i 's/^MODULES=(/MODULES=(xe /' /etc/mkinitcpio.conf
+
+
+systemctl enable NetworkManager
+
 mkinitcpio -P
 
 # Bootloader (Targeting /boot as defined in mount)
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet zswap.enabled=0 xe.force_probe=*"/' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
-
-systemctl enable NetworkManager
 
 echo '#!/bin/sh
 set -e
@@ -102,10 +111,7 @@ chmod +x /data/enviroment-variables.sh
 
 EOF
 
-arch-chroot /mnt
-echo "Set password as root"
-passwd && exit
 # 6. Cleanup
-echo "Installation complete. Rebooting is recommended. Check FSTAB at /mnt/etc/fstab."
+echo "Installation complete. Rebooting is recommended. Check FSTAB at /mnt/etc/fstab, run arch-chroot /mnt, then passwd for setting root password."
 
 
