@@ -29,7 +29,9 @@ swapon /mnt/swapfile
 
 # 4. Mirrors & Base Install
 reflector -c US -l 20 --sort score --save /etc/pacman.d/mirrorlist
-pacstrap -K /mnt base linux linux-firmware amd-ucode sof-firmware man-db man-pages nvim networkmanager efibootmgr grub zram-generator mesa vulkan-intel intel-media-driver vpl-gpu-rt libva-utils
+
+rm -rf /boot/amd-ucode.img
+pacstrap -K /mnt base linux linux-firmware amd-ucode sof-firmware man-db man-pages nvim networkmanager efibootmgr grub zram-generator mesa vulkan-intel intel-media-driver vpl-gpu-rt libva-utils reflector
 genfstab -U /mnt >> /mnt/etc/fstab
 
 
@@ -50,8 +52,6 @@ sed -i 's/^MODULES=(/MODULES=(xe /' /etc/mkinitcpio.conf
 
 
 systemctl enable NetworkManager
-
-rm -rf /boot/amd-ucode.img
 
 mkinitcpio -P
 
