@@ -51,6 +51,8 @@ sed -i 's/^MODULES=(/MODULES=(xe /' /etc/mkinitcpio.conf
 
 systemctl enable NetworkManager
 
+rm -rf /boot/amd-ucode.img
+
 mkinitcpio -P
 
 # Bootloader (Targeting /boot as defined in mount)
