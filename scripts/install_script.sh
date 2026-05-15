@@ -76,7 +76,7 @@ Type=simple
 ExecStart=/usr/local/sbin/write-cache-disabler
 
 [Install]
-WantedBy=multi-user.target' > 
+WantedBy=multi-user.target' > /etc/systemd/system/write-cache-disabler.service
 systemctl enable write-cache-disabler
 
 echo 'ACTION=="add|change", SUBSYSTEM=="block", KERNEL=="sd*", RUN+="/usr/bin/hdparm -B 254 -S 0 /dev/sda"' > /etc/udev/rules.d/69-hdparm.rules
