@@ -25,8 +25,8 @@ flatpak -y --noninteractive install flathub com.spotify.Client
 printf "Zen (Flathub)\nSpotify (Flathub)\n" >> "$NOTES_FILE"
 
 # 4. System Tools & Utilities
-ipac spotify-launcher udiskie wl-clipboard quickshell grim slurp
-printf "Spotify\nUdiskie\nwl-clipboard\nquickshell\ngrim\nslurp\n" >> "$NOTES_FILE"
+ipac udiskie wl-clipboard quickshell grim slurp
+printf "Udiskie\nwl-clipboard\nquickshell\ngrim\nslurp\n" >> "$NOTES_FILE"
 
 ipac pacman-contrib ripgrep strace rsync
 printf "pacman-contrib\nripgrep\nstrace\nrsync\n" >> "$NOTES_FILE"
@@ -54,18 +54,13 @@ if ! pacman -Qi brother-hl2270dw > /dev/null 2>&1; then
     yay --noconfirm -S brother-hl2270dw
 fi
 
-if ! pacman -Qi timg > /dev/null 2>&1; then
-	yay --noconfirm -S timg
-fi
 
-# 9. Wallpapers!
-ipac hyprpaper
+# 9. Wallpapers
+# ipac hyprpaper
+
 # 10. More Utils
-ipac fd tldr nnn tar gzip bzip2 xz zip unzip p7zip curl bat eza mcfly
-printf "fd\ntldr\nnnn\nbat\neza\nmcfly\n" >> "$NOTES_FILE"
-
-# Oh My Posh
-sudo chown -R "$name":"$name" "/home/$name/.config/fish"
+ipac fd tldr nnn tar gzip bzip2 xz zip unzip p7zip curl bat eza mcfly zoxide
+printf "fd\ntldr\nnnn\nbat\neza\nmcfly\nzoide\n" >> "$NOTES_FILE"
 
 
 # Check if oh-my-posh binary exists
@@ -75,13 +70,6 @@ if [ ! -f "$HOME/.local/bin/oh-my-posh" ]; then
 else
     echo "Oh My Posh already installed, skipping download."
 fi
-
-
-
-
-printf '\noh-my-posh init fish --config 'tokyonight_storm' | source' >> ~/.config/fish/config.fish
-printf '\nmcfly init fish | source' >> ~/.config/fish/config.fish
-
 
 
 echo 'Setup complete! Please reboot to finalize driver installation. Run "fish_add_path ~/.local/bin".'
