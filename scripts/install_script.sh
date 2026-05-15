@@ -28,15 +28,46 @@ swapon /mnt/swapfile
 
 
 # 4. Mirrors & Base Install
-reflector -c US -l 20 --sort score --save /etc/pacman.d/mirrorlist
+reflector --protocol HTTPS -l 20 --sort rate --save /etc/pacman.d/mirrorlist
 
 
 if [ -f /mnt/boot/amd-ucode.img ]; then
 rm -rf /mnt/boot/amd-ucode.img || exit 1
 fi
 
-pacstrap -K /mnt base linux linux-firmware amd-ucode sof-firmware man-db man-pages nvim networkmanager efibootmgr grub zram-generator mesa vulkan-intel intel-media-driver vpl-gpu-rt libva-utils reflector
+pacstrap -K /mnt base linux linux-firmware amd-ucode sof-firmware man-db man-pages nvim networkmanager efibootmgr grub zram-generator mesa vulkan-intel intel-media-driver vpl-gpu-rt libva-utils reflector logrotate
 genfstab -U /mnt >> /mnt/etc/fstab
+
+cat > /mnt/etc/systemd/system/reflector.service <<EOF
+[Unit]
+Description=Automagic Reflector service updater
+Wants=network-online.target
+After=network-online.target
+
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/reflector \
+  --latest 20 \
+  --protocol https \
+  --sort rate \
+  --save /etc/pacman.d/mirrorlist
+StandardOutput=journal
+StandardError=journal
+EOF
+
+cat > /mnt/etc/systemd/system/reflector.timer << EOF
+[Unit]
+Description=Run Reflector weekly
+
+[Timer]
+OnCalendar=weekly
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+EOF
+
 cat > /mnt/etc/modprobe.d/uvcvideo.conf <<EOF
 blacklist uvcvideo
 EOF
@@ -109,6 +140,7 @@ sed -i 's/^MODULES=(/MODULES=(xe /' /etc/mkinitcpio.conf
 
 
 systemctl enable NetworkManager
+systemctl enable NetworkManager-wait-online
 
 mkinitcpio -P
 
@@ -118,15 +150,17 @@ sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 
 grub-mkconfig -o /boot/grub/grub.cfg
 
 
+# Systemd services
+systemctl daemon-reload
+
+systemctl enable reflector.timer
+systemctl enable logrotate logrotate.timer
 systemctl enable fstrim.timer
-
 systemctl enable write-cache-disabler
-
-echo 'export ANV_DEBUG=video-decode,video-encode' > /data/enviroment-variables.sh
-
-chmod +x /data/enviroment-variables.sh
 systemctl enable systemd-zram-setup@zram0.service
 
+echo 'export ANV_DEBUG=video-decode,video-encode' > /etc/profile.d/environment-variables.sh
+chmod 644 /etc/profile.d/environment-variables.sh
 EOF
 
 # 6. Cleanup
