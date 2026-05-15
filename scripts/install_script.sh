@@ -35,7 +35,7 @@ if [ -f /mnt/boot/amd-ucode.img ]; then
 rm -rf /mnt/boot/amd-ucode.img || exit 1
 fi
 
-pacstrap -K /mnt base linux linux-firmware amd-ucode sof-firmware man-db man-pages nvim networkmanager efibootmgr grub zram-generator mesa vulkan-intel intel-media-driver vpl-gpu-rt libva-utils reflector logrotate
+pacstrap -K /mnt base linux linux-firmware amd-ucode sof-firmware man-db man-pages nvim networkmanager efibootmgr grub zram-generator mesa vulkan-intel intel-media-driver vpl-gpu-rt libva-utils reflector logrotate pacutils
 genfstab -U /mnt >> /mnt/etc/fstab
 
 cat > /mnt/etc/systemd/system/reflector.service <<EOF
