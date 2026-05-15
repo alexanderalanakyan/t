@@ -37,12 +37,17 @@ fi
 
 pacstrap -K /mnt base linux linux-firmware amd-ucode sof-firmware man-db man-pages nvim networkmanager efibootmgr grub zram-generator mesa vulkan-intel intel-media-driver vpl-gpu-rt libva-utils reflector
 genfstab -U /mnt >> /mnt/etc/fstab
+cat > /mnt/etc/modprobe.d/uvcvideo.conf <<EOF
+blacklist uvcvideo
+EOF
 
-printf "blacklist uvcvideo\n" > /mnt/etc/modprobe.d/uvcvideo.conf
+cat > /mnt/etc/NetworkManager/conf.d/powersave.conf <<EOF
+[connection]
+wifi.powersave=2
+EOF
 
-printf "[connection]\nwifi.powersave=2\n" > /mnt/etc/NetworkManager/conf.d/powersave.conf
-
-printf '[Unit]
+cat > /mnt/etc/systemd/system/write-cache-disabler.service <<EOF
+[Unit]
 Description=Write cache disabler daemon
 
 [Service]
@@ -50,12 +55,15 @@ Type=simple
 ExecStart=/usr/local/sbin/write-cache-disabler
 
 [Install]
-WantedBy=multi-user.target' > /mnt/etc/systemd/system/write-cache-disabler.service
+WantedBy=multi-user.target
+EOF
 
-printf 'ACTION=="add|change", SUBSYSTEM=="block", KERNEL=="sd*", RUN+="/usr/bin/hdparm -B 254 -S 0 /dev/sda"' > /mnt/etc/udev/rules.d/69-hdparm.rules
+cat > /mnt/etc/udev/rules.d/69-hdparm.rules <<EOF
+ACTION=="add|change", SUBSYSTEM=="block", KERNEL=="sd*", RUN+="/usr/bin/hdparm -B 254 -S 0 /dev/sda"
+EOF
 
-
-printf '#!/bin/sh
+cat > /mnt/usr/local/sbin/write-cache-disabler <<EOF
+#!/bin/sh
 set -e
 
 while true; do
@@ -68,15 +76,23 @@ while true; do
                    || true)
         done)
         sleep 30
-done' > /mnt/usr/local/sbin/write-cache-disabler
+done
+EOF
 
-printf 'vm.swappiness = 180\n
-vm.watermark_boost_factor = 0\n
-vm.watermark_scale_factor = 125\n
-vm.page-cluster = 0' > /mnt/etc/sysctl.d/99-vm-zram-parameters.conf
+cat > /mnt/etc/sysctl.d/99-vm-zram-parameters.conf <<EOF
+vm.swappiness = 180
 
-printf '[zram0]\n
-compression-algorithm = zstd lzo-rle' > /mnt/etc/systemd/zram-generator.conf
+vm.watermark_boost_factor = 0
+
+vm.watermark_scale_factor = 125
+
+vm.page-cluster = 0
+EOF
+
+cat > /mnt/etc/systemd/zram-generator.conf <<EOF
+[zram0]
+compression-algorithm = zstd lzo-rle
+EOF
 
 chmod +x /mnt/usr/local/sbin/write-cache-disabler
 
