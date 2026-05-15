@@ -25,8 +25,6 @@ addtonotes() {
   done
 }
 
-systemctl enable systemd-zram-setup@zram0
-
 # -------------------------
 # User Setup
 # -------------------------
