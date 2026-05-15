@@ -35,7 +35,7 @@ if [ -f /mnt/boot/amd-ucode.img ]; then
 rm -rf /mnt/boot/amd-ucode.img || exit 1
 fi
 
-pacstrap -K /mnt base linux linux-firmware amd-ucode sof-firmware man-db man-pages nvim networkmanager efibootmgr grub zram-generator mesa vulkan-intel intel-media-driver vpl-gpu-rt libva-utils reflector logrotate pacutils
+pacstrap -K /mnt base linux linux-lts linux-firmware amd-ucode sof-firmware man-db man-pages nvim networkmanager efibootmgr grub zram-generator mesa vulkan-intel intel-media-driver vpl-gpu-rt libva-utils reflector logrotate pacutils fwupd
 genfstab -U /mnt >> /mnt/etc/fstab
 
 cat > /mnt/etc/systemd/system/reflector.service <<EOF
@@ -153,6 +153,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 # Systemd services
 systemctl daemon-reload
 
+systemctl enable fwupd fwupd-refresh.timer
 systemctl enable reflector.timer
 systemctl enable logrotate logrotate.timer
 systemctl enable fstrim.timer
