@@ -38,36 +38,6 @@ fi
 pacstrap -K /mnt base linux linux-lts linux-firmware amd-ucode sof-firmware man-db man-pages nvim networkmanager efibootmgr grub zram-generator mesa vulkan-intel intel-media-driver vpl-gpu-rt libva-utils reflector logrotate pacutils fwupd
 genfstab -U /mnt >> /mnt/etc/fstab
 
-cat > /mnt/etc/systemd/system/reflector.service <<EOF
-[Unit]
-Description=Automagic Reflector service updater
-Wants=network-online.target
-After=network-online.target
-
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/reflector \
-  --latest 20 \
-  --protocol https \
-  --sort rate \
-  --save /etc/pacman.d/mirrorlist
-StandardOutput=journal
-StandardError=journal
-EOF
-
-cat > /mnt/etc/systemd/system/reflector.timer << EOF
-[Unit]
-Description=Run Reflector weekly
-
-[Timer]
-OnCalendar=weekly
-Persistent=true
-
-[Install]
-WantedBy=timers.target
-EOF
-
 cat > /mnt/etc/modprobe.d/uvcvideo.conf <<EOF
 blacklist uvcvideo
 EOF
