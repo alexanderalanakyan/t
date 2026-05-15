@@ -30,35 +30,30 @@ swapon /mnt/swapfile
 # 4. Mirrors & Base Install
 reflector -c US -l 20 --sort score --save /etc/pacman.d/mirrorlist
 
-rm -rf /boot/amd-ucode.img
+
+if [ -f /mnt/boot/amd-ucode.img ]; then
+rm -rf /mnt/boot/amd-ucode.img || exit 1
+fi
+
 pacstrap -K /mnt base linux linux-firmware amd-ucode sof-firmware man-db man-pages nvim networkmanager efibootmgr grub zram-generator mesa vulkan-intel intel-media-driver vpl-gpu-rt libva-utils reflector
 genfstab -U /mnt >> /mnt/etc/fstab
 
+printf "blacklist uvcvideo\n" > /mnt/etc/modprobe.d/uvcvideo.conf
 
-# 5. Chroot Configuration (Using EOF to automate)
-arch-chroot /mnt <<EOF
-ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
-hwclock --systohc
-sed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
-locale-gen
-echo 'LANG=en_US.UTF-8' > /etc/locale.conf
-echo 'notabene' > /etc/hostname
+printf "[connection]\nwifi.powersave=2\n" > /mnt/etc/NetworkManager/conf.d/powersave.conf
 
-printf "blacklist uvcvideo\n" > /etc/modprobe.d/uvcvideo.conf
+printf '[Unit]
+Description=Write cache disabler daemon
 
-printf "[connection]\nwifi.powersave=2\n" > /etc/NetworkManager/conf.d/powersave.conf
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/write-cache-disabler
 
-sed -i 's/^MODULES=(/MODULES=(xe /' /etc/mkinitcpio.conf
+[Install]
+WantedBy=multi-user.target' > /mnt/etc/systemd/system/write-cache-disabler.service
 
+printf 'ACTION=="add|change", SUBSYSTEM=="block", KERNEL=="sd*", RUN+="/usr/bin/hdparm -B 254 -S 0 /dev/sda"' > /mnt/etc/udev/rules.d/69-hdparm.rules
 
-systemctl enable NetworkManager
-
-mkinitcpio -P
-
-# Bootloader (Targeting /boot as defined in mount)
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet zswap.enabled=0 xe.force_probe=*"/' /etc/default/grub
-grub-mkconfig -o /boot/grub/grub.cfg
 
 printf '#!/bin/sh
 set -e
@@ -75,35 +70,45 @@ while true; do
         sleep 30
 done' > /mnt/usr/local/sbin/write-cache-disabler
 
-chmod +x /mnt/usr/local/sbin/write-cache-disabler
-
-printf '[Unit]
-Description=Write cache disabler daemon
-
-[Service]
-Type=simple
-ExecStart=/usr/local/sbin/write-cache-disabler
-
-[Install]
-WantedBy=multi-user.target' > /etc/systemd/system/write-cache-disabler.service
-systemctl enable write-cache-disabler
-
-printf 'ACTION=="add|change", SUBSYSTEM=="block", KERNEL=="sd*", RUN+="/usr/bin/hdparm -B 254 -S 0 /dev/sda"' > /etc/udev/rules.d/69-hdparm.rules
-
-systemctl enable fstrim
-systemctl enable fstrim.timer
-
 printf 'vm.swappiness = 180\n
 vm.watermark_boost_factor = 0\n
 vm.watermark_scale_factor = 125\n
-vm.page-cluster = 0' > /etc/sysctl.d/99-vm-zram-parameters.conf
+vm.page-cluster = 0' > /mnt/etc/sysctl.d/99-vm-zram-parameters.conf
 
 printf '[zram0]\n
-compression-algorithm = zstd lzo-rle' > /etc/systemd/zram-generator.conf
+compression-algorithm = zstd lzo-rle' > /mnt/etc/systemd/zram-generator.conf
+
+chmod +x /mnt/usr/local/sbin/write-cache-disabler
+
+# 5. Chroot Configuration (Using EOF to automate)
+arch-chroot /mnt <<EOF
+ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
+hwclock --systohc
+sed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
+locale-gen
+echo 'LANG=en_US.UTF-8' > /etc/locale.conf
+echo 'notabene' > /etc/hostname
+
+sed -i 's/^MODULES=(/MODULES=(xe /' /etc/mkinitcpio.conf
+
+
+systemctl enable NetworkManager
+
+mkinitcpio -P
+
+# Bootloader (Targeting /boot as defined in mount)
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet zswap.enabled=0 xe.force_probe=*"/' /etc/default/grub
+grub-mkconfig -o /boot/grub/grub.cfg
+
+
+systemctl enable fstrim.timer
+
 
 systemctl daemon-reload
 
 systemctl enable systemd-zram-setup@zram0
+systemctl enable write-cache-disabler
 
 echo 'export ANV_DEBUG=video-decode,video-encode' > /data/enviroment-variables.sh
 
