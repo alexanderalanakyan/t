@@ -103,7 +103,9 @@ chmod +x /data/enviroment-variables.sh
 EOF
 
 arch-chroot /mnt
+echo "Set password as root"
+passwd && exit
 # 6. Cleanup
-echo "Installation complete. Rebooting is recommended. Check FSTAB at /etc/fstab, and run passwd to set root password."
+echo "Installation complete. Rebooting is recommended. Check FSTAB at /mnt/etc/fstab."
 
 
