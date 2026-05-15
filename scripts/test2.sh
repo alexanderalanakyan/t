@@ -59,8 +59,8 @@ fi
 # ipac hyprpaper
 
 # 10. More Utils
-ipac fd tldr nnn tar gzip bzip2 xz zip unzip p7zip curl bat eza mcfly zoxide
-printf "fd\ntldr\nnnn\nbat\neza\nmcfly\nzoide\n" >> "$NOTES_FILE"
+ipac fd tldr nnn tar gzip bzip2 xz zip unzip p7zip curl bat eza mcfly zoxide ripgrep-all broot
+printf "fd\ntldr\nnnn\nbat\neza\nmcfly\nzoide\nripgrep-all\nbroot\n" >> "$NOTES_FILE"
 
 
 # Check if oh-my-posh binary exists
