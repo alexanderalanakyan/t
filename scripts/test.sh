@@ -34,6 +34,7 @@ if ! id "$USERNAME" >/dev/null 2>&1; then
   echo "Set password for $USERNAME:"
   passwd "$USERNAME"
 fi
+ipac sudo xdg-user-dirs git base-devel
 
 sudo -u "$USERNAME" mkdir -p "$user_home/Notes"
 : > "$user_home/Notes/apps.txt"
@@ -41,7 +42,7 @@ sudo -u "$USERNAME" mkdir -p "$user_home/Notes"
 # -------------------------
 # 1. Base Utilities & Build Tools
 # -------------------------
-ipac sudo xdg-user-dirs git base-devel
+
 addtonotes sudo xdg-user-dirs git base-devel
 
 # Sudo/User Config
