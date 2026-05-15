@@ -42,10 +42,8 @@ locale-gen
 echo 'LANG=en_US.UTF-8' > /etc/locale.conf
 echo 'notabene' > /etc/hostname
 
-mkdir -p /etc/modprobe.d
 printf "blacklist uvcvideo\n" > /etc/modprobe.d/uvcvideo.conf
 
-mkdir -p /etc/NetworkManager/conf.d
 printf "[connection]\nwifi.powersave=2\n" > /etc/NetworkManager/conf.d/powersave.conf
 
 sed -i 's/^MODULES=(/MODULES=(xe /' /etc/mkinitcpio.conf
@@ -60,7 +58,7 @@ grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet zswap.enabled=0 xe.force_probe=*"/' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
-echo '#!/bin/sh
+printf '#!/bin/sh
 set -e
 
 while true; do
@@ -77,7 +75,7 @@ done' > /mnt/usr/local/sbin/write-cache-disabler
 
 chmod +x /mnt/usr/local/sbin/write-cache-disabler
 
-echo '[Unit]
+printf '[Unit]
 Description=Write cache disabler daemon
 
 [Service]
@@ -88,7 +86,7 @@ ExecStart=/usr/local/sbin/write-cache-disabler
 WantedBy=multi-user.target' > /etc/systemd/system/write-cache-disabler.service
 systemctl enable write-cache-disabler
 
-echo 'ACTION=="add|change", SUBSYSTEM=="block", KERNEL=="sd*", RUN+="/usr/bin/hdparm -B 254 -S 0 /dev/sda"' > /etc/udev/rules.d/69-hdparm.rules
+printf 'ACTION=="add|change", SUBSYSTEM=="block", KERNEL=="sd*", RUN+="/usr/bin/hdparm -B 254 -S 0 /dev/sda"' > /etc/udev/rules.d/69-hdparm.rules
 
 systemctl enable fstrim
 systemctl enable fstrim.timer
