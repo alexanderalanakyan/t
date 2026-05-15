@@ -125,6 +125,7 @@ systemctl enable write-cache-disabler
 echo 'export ANV_DEBUG=video-decode,video-encode' > /data/enviroment-variables.sh
 
 chmod +x /data/enviroment-variables.sh
+systemctl enable systemd-zram-setup@zram0.service
 
 EOF
 
