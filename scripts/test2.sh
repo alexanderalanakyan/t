@@ -25,8 +25,8 @@ flatpak -y --noninteractive install flathub com.spotify.Client
 printf "Zen (Flathub)\nSpotify (Flathub)\n" >> "$NOTES_FILE"
 
 # 4. System Tools & Utilities
-ipac udiskie wl-clipboard quickshell grim slurp
-printf "Udiskie\nwl-clipboard\nquickshell\ngrim\nslurp\n" >> "$NOTES_FILE"
+ipac udiskie wl-clipboard quickshell grim slurp weechat
+printf "Udiskie\nwl-clipboard\nquickshell\ngrim\nslurp\nweechat\n" >> "$NOTES_FILE"
 
 ipac pacman-contrib ripgrep strace rsync
 printf "pacman-contrib\nripgrep\nstrace\nrsync\n" >> "$NOTES_FILE"
