@@ -85,20 +85,11 @@ addtonotes bluez flatpak scdoc xdg-utils tuned nftables upower
 
 systemctl enable bluetooth tuned nftables
 
-mkdir -p /etc/modprobe.d
-printf "blacklist uvcvideo\n" > /etc/modprobe.d/uvcvideo.conf
-
-mkdir -p /etc/NetworkManager/conf.d
-printf "[connection]\nwifi.powersave=2\n" > /etc/NetworkManager/conf.d/powersave.conf
-
-sed -i 's/^MODULES=(/MODULES=(xe /' /etc/mkinitcpio.conf
 
 
 # -------------------------
 # Finalization
 # -------------------------
-chown -R "$USERNAME:$USERNAME" "$user_home"
-mkinitcpio -P
 
 echo "Installation complete. Press Enter to reboot."
 read -r
