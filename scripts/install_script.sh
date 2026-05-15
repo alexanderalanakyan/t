@@ -120,10 +120,6 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 systemctl enable fstrim.timer
 
-
-systemctl daemon-reload
-
-systemctl enable systemd-zram-setup@zram0
 systemctl enable write-cache-disabler
 
 echo 'export ANV_DEBUG=video-decode,video-encode' > /data/enviroment-variables.sh
