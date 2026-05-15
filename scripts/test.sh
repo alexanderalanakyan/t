@@ -1,11 +1,6 @@
 #!/bin/sh
 set -euo pipefail
 
-if [ "$(id -u)" -ne 0 ]; then
-  echo "Must be run as root"
-  exit 1
-fi
-
 if [ -z "${1:-}" ]; then
   echo "Usage: $0 <username>"
   exit 1
@@ -30,9 +25,12 @@ addtonotes() {
   done
 }
 
+systemctl enable systemd-zram-setup@zram0
+
 # -------------------------
 # User Setup
 # -------------------------
+
 if ! id "$USERNAME" >/dev/null 2>&1; then
   useradd -m -G wheel "$USERNAME"
   echo "Set password for $USERNAME:"
