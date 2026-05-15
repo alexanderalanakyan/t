@@ -10,12 +10,20 @@ fi
 timedatectl set-timezone America/New_York
 mkfs.ext4 -F /dev/nvme0n1p3
 mkfs.ext4 -F /dev/nvme0n1p4
-mkswap -F /dev/nvme0n1p2
+mkfs.ext4 -F /dev/nvme0n1p2
+mkfs.ext4 -F /dev/sda1
+mkswap -U clear --size 4G --file /swapfile
 # 3. Mounting
 mount /dev/nvme0n1p3 /mnt
 mount --mkdir /dev/nvme0n1p4 /mnt/home
 mount --mkdir /dev/nvme0n1p1 /mnt/boot
-swapon /dev/nvme0n1p2
+mount --mkdir /dev/sda1 /mnt/data
+swapon /swapfile 
+
+
+
+
+
 
 # 4. Mirrors & Base Install
 reflector -c US -l 20 --sort score --save /etc/pacman.d/mirrorlist
@@ -39,11 +47,62 @@ mkinitcpio -P
 
 # Bootloader (Targeting /boot as defined in mount)
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-GPU_ID="e20b"
-sed -i "s|^GRUB_CMDLINE_LINUX_DEFAULT=\".*\"|GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 quiet zswap.enabled=0 xe.force_probe=$GPU_ID\"|" /etc/default/grub
+sed -i "s|^GRUB_CMDLINE_LINUX_DEFAULT=\".*\"|GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 quiet zswap.enabled=0" |" /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
 systemctl enable NetworkManager
+
+echo '#!/bin/sh
+set -e
+
+while true; do
+        lsblk --raw --scsi --paths -o name \
+        | tail --lines='+2' \
+        | (while read -r name; do 
+                hdparm -W "$name" \
+                | (grep --fixed-strings --quiet -e '1 (on)' \
+                   && hdparm -W 0 "$name" \
+                   || true)
+        done)
+        sleep 30
+done' > /mnt/usr/local/sbin/write-cache-disabler
+
+chmod +x /mnt/usr/local/sbin/write-cache-disabler
+
+echo '[Unit]
+Description=Write cache disabler daemon
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/write-cache-disabler
+
+[Install]
+WantedBy=multi-user.target'
+systemctl enable write-cache-disabler
+
+echo 'ACTION=="add|change", SUBSYSTEM=="block", KERNEL=="sda", RUN+="/usr/bin/hdparm -B 254 -S 0 /dev/sda"' > /etc/udev/rules.d/69-hdparm.rules
+
+systemctl enable fstrim
+systemctl enable fstrim.timer
+
+printf 'vm.swappiness = 180\n
+vm.watermark_boost_factor = 0\n
+vm.watermark_scale_factor = 125\n
+vm.page-cluster = 0' > /etc/sysctl.d/99-vm-zram-parameters.conf
+
+printf '[zram0]\n
+compression-algorithm = lzo-rle zstd(level=3) (type=idle)' > /etc/systemd/zram-generator.conf
+
+systemctl daemon-reload
+
+systemctl enable systemd-zram-setup@zram0
+
+echo 'export ANV_DEBUG=video-decode,video-encode' > /data/enviroment-variables.sh
+
+chmod +x /data/enviroment-variables.sh
+
+
+
 EOF
 
 # 6. Cleanup
