@@ -51,16 +51,19 @@ printf "CUPS\navahi\n" >> "$NOTES_FILE"
 # 8. AUR Packages
 
 if ! pacman -Qi brother-hl2270dw > /dev/null 2>&1; then
-    yay --noconfirm -S brother-hl2270dw
+    yay --needed --noconfirm -S brother-hl2270dw
 fi
 
+if ! pacman -Qi journalctl-desktop-notification > /dev/null 2>&1; then
+    yay --needed --noconfirm -S journalctl-desktop-notification
+fi
 
 # 9. Wallpapers
 # ipac hyprpaper
 
 # 10. More Utils
-ipac fd tldr nnn tar gzip bzip2 xz zip unzip p7zip curl bat eza mcfly zoxide ripgrep-all broot
-printf "fd\ntldr\nnnn\nbat\neza\nmcfly\nzoide\nripgrep-all\nbroot\n" >> "$NOTES_FILE"
+ipac fd tldr nnn tar gzip bzip2 xz zip unzip p7zip curl bat eza mcfly zoxide ripgrep-all broot uutils-coreutils
+printf "fd\ntldr\nnnn\nbat\neza\nmcfly\nzoide\nripgrep-all\nbroot\nuutils\n" >> "$NOTES_FILE"
 
 
 # Check if oh-my-posh binary exists
