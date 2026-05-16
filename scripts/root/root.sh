@@ -11,18 +11,7 @@ DATA_DIR="/data/Notes"
 if [ ! -d "$DATA_DIR" ]; then
     sudo mkdir -p "$DATA_DIR"
 fi
-
-# 2. Set ownership to root:wheel
-sudo chown -R root:wheel /data
-
-# 3. Set permissions for directories and files
-#    Directories: rwx for owner & group (770)
-#    Files: rw for owner & group (660)
-sudo find /data -type d -exec chmod 770 {} \;
-sudo find /data -type f -exec chmod 660 {} \;
-
-# 4. Optional: make new files inherit group 'wheel'
-sudo chmod g+s /data
+chmod -R 755 /data  
 
 ./install_root_packages
 
@@ -38,6 +27,8 @@ if ! id "$USERNAME" >/dev/null 2>&1; then
   echo "Set password for $USERNAME:"
   passwd "$USERNAME"
 fi
+echo "%wheel ALL=(ALL:ALL) ALL" > /etc/sudoers.d/10-wheel
+visudo -cf /etc/sudoers.d/10-wheel
 
 sudo -u "$USERNAME" xdg-user-dirs-update
 
