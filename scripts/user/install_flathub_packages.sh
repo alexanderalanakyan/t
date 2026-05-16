@@ -1,43 +1,31 @@
 #!/usr/bin/env bash
 
-flathubs=$(python3 <<'EOF'
+source "../functions/functions.sh"
+OUTPUT=$(python3 << 'EOF'
+
 import tomllib
-from pathlib import Path
+with open("../settings/packages.toml", "rb") as f:
+    data = tomllib.load(f)
+excluded_keys=["aur", "notes"]
+flat_pkgs=[]
+def walk(d, in_flat=False):
+    for k,v in d.items():
+        is_flat = in_flat or k.lower() =="flathub"
+        if k in excluded_keys:
+                continue
+        if k == "packages" and isinstance(v,list):
+            if in_flat:
+                flat_pkgs.extend(v)
+            else:
+                continue
+        elif isinstance(v, dict):
+            walk(v, in_flat)
+walk(data["user"])
 
-toml_path = Path("../settings/packages.toml")
-with toml_path.open("rb") as f:
-    cfg = tomllib.load(f)
-
-special_sections = {"aur", "notes", "base", "system"}  # flathub is the one we want
-
-flathub_pkgs = []
-
-def walk(d):
-    for k, v in d.items():
-        key_lower = k.lower()
-        if key_lower in special_sections:
-            continue
-        if "flathub" in key_lower:
-            if isinstance(v, dict):
-                # collect packages inside flathub section
-                for subk, subv in v.items():
-                    if subk == "packages" and isinstance(subv, list):
-                        flathub_pkgs.extend(subv)
-            continue
-        if isinstance(v, dict):
-            walk(v)
-        elif k == "packages" and isinstance(v, list):
-            pass  # ignore other packages
-
-walk(cfg)
-
-for pkg in flathub_pkgs:
-    print(pkg)
+print("\n".join(flat_pkgs).strip(" "))
 EOF
 )
-
-for i in $flathubs; do
-    flatpak -y --noninteractive install flathub "$i"
+for i in "$OUTPUT"; do 
+# flathub install "$i"
+echo "$i"
 done
-
-notes "$flathubs"
