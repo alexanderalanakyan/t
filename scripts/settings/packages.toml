@@ -1,0 +1,178 @@
+[base]
+packages = [
+  "linux",
+  "linux-lts",
+  "linux-firmware",
+  "sof-firmware",
+  "man-db",
+  "man-pages",
+  "nvim",
+  "networkmanager",
+  "efibootmgr",
+  "grub",
+  "mesa"
+]
+
+[base.cpu.amd]
+packages = ["amd-ucode"]
+
+[base.gpu.intel]
+packages = [
+  "vulkan-intel",
+  "intel-media-driver",
+  "vpl-gpu-rt",
+  "libva-utils"
+]
+
+[base.extra]
+packages = [
+  "zram-generator",
+  "reflector",
+  "logrotate",
+  "pacutils",
+  "fwupd",
+  "pacman-contrib"
+]
+
+[system.fonts]
+packages = [
+  "noto-fonts-extra",
+  "noto-fonts-emoji",
+  "noto-fonts-cjk",
+  "ttf-jetbrains-mono-nerd"
+]
+
+[system.base]
+packages = [
+  "sudo",
+  "xdg-user-dirs",
+  "git",
+  "base-devel",
+  "xdg-utils",
+  "scdoc"
+]
+
+[system.shell]
+packages = ["fish"]
+
+[system.terminal]
+packages = ["kitty"]
+
+[system.audio]
+packages = [
+  "pipewire",
+  "wireplumber",
+  "pipewire-alsa",
+  "pipewire-pulse",
+  "pipewire-audio",
+  "pipewire-jack"
+]
+
+[system.network]
+packages = ["bluez", "bluez-utils"]
+
+[system.apps]
+packages = ["flatpak"]
+
+[system.services]
+packages = ["tuned", "nftables", "upower"]
+
+[user.flathub]
+packages = [
+  "com.spotify.Client",
+  "app.zen_browser.zen"
+]
+
+[user.utils.search]
+packages = [
+  "ripgrep",
+  "ripgrep-all",
+  "fd"
+]
+
+[user.utils.navigation]
+packages = [
+  "nnn",
+  "broot"
+]
+
+[user.utils.network]
+packages = [
+  "curl"
+]
+
+[user.utils.cli]
+packages = [
+  "bat",
+  "eza",
+  "tldr"
+]
+
+[user.utils.shell]
+packages = [
+  "mcfly",
+  "zoxide"
+]
+
+[user.utils.system]
+packages = [
+  "strace",
+  "rsync",
+  "uutils-coreutils"
+]
+
+[user.utils.archive]
+packages = [
+  "tar",
+  "gzip",
+  "bzip2",
+  "xz",
+  "zip",
+  "unzip",
+  "p7zip"
+]
+
+[user.printers]
+packages = ["cups", "avahi", "nss-mdns"]
+
+[user.secrets]
+packages=["gnome-keyring", "libsecret", "seahorse"]
+
+
+[user.desktop]
+packages = ["hyprland"]
+
+[user.desktop.extra]
+packages = [
+  "hyprpolkitagent",
+  "xdg-desktop-portal-hyprland",
+  "libnotify",
+  "dunst",
+  "udiskie",
+  "qt5-wayland", 
+  "qt6-wayland"
+]
+
+[user.desktop.clipboard]
+packages=["wl-clipboard"]
+
+[user.desktop.widgets]
+packages=["quickshell"]
+
+[user.screenshot]
+packages=["grim", "slurp"] 
+
+[user.irc]
+packages=["weechat"]
+
+[user.aur.desktop.applauncher]
+packages = ["vicinae-bin"]
+
+[user.aur.printers.drivers]
+packages=["brother-hl2270dw"]
+
+[user.aur.desktop.extra]
+packages=["journalctl-desktop-notification"]
+
+[user.runcommand]
+cmd=["curl -s https://ohmyposh.dev/install.sh | bash -s"]
