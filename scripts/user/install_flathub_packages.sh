@@ -16,7 +16,7 @@ def walk(d, in_flat=False):
             else:
                 continue
         elif isinstance(v, dict):
-            walk(v, in_flat)
+            walk(v, is_flat)
 walk(data["user"])
 
 print("\n".join(flat_pkgs).strip(" "))
