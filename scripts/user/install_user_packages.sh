@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
+set -e
 
+trap 'echo "Error on line $LINENO"; read -p "Press enter to exit"' ERR
 source "../functions/functions.sh"
 OUTPUT=$(python3 << 'EOF'
 
