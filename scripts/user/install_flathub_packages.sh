@@ -6,13 +6,10 @@ OUTPUT=$(python3 << 'EOF'
 import tomllib
 with open("../settings/packages.toml", "rb") as f:
     data = tomllib.load(f)
-excluded_keys=["aur", "notes"]
 flat_pkgs=[]
 def walk(d, in_flat=False):
     for k,v in d.items():
         is_flat = in_flat or k.lower() =="flathub"
-        if k in excluded_keys:
-                continue
         if k == "packages" and isinstance(v,list):
             if in_flat:
                 flat_pkgs.extend(v)
