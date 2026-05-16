@@ -36,10 +36,29 @@ packages = [
 
 [system.fonts]
 packages = [
+  # Noto family (all languages + symbols)
+  "noto-fonts",
   "noto-fonts-extra",
-  "noto-fonts-emoji",
   "noto-fonts-cjk",
-  "ttf-jetbrains-mono-nerd"
+  "noto-fonts-emoji",
+  "noto-fonts-symbols",
+
+  # Coding / Monospaced fonts
+  "ttf-jetbrains-mono-nerd",
+  "ttf-fira-code",
+  "ttf-dejavu-sans-mono",
+  "ttf-source-code-pro",
+
+  # Serif / Sans-serif for general UI
+  "ttf-roboto",
+  "ttf-ubuntu",
+  "ttf-liberation",
+  "ttf-cantarell",
+  "ttf-droid",
+
+  # Optional display / icon fonts
+  "ttf-font-awesome",
+  "ttf-material-design-icons"
 ]
 
 [system.base]
@@ -174,5 +193,5 @@ packages=["brother-hl2270dw"]
 [user.aur.desktop.extra]
 packages=["journalctl-desktop-notification"]
 
-[user.runcommand]
-cmd=["curl -s https://ohmyposh.dev/install.sh | bash -s"]
+[user.notes]
+packages=["yay", "oh-my-posh"]

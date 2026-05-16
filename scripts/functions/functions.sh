@@ -30,3 +30,22 @@ yay_install() {
     yay -S --needed --noconfirm --answerdiff Y "$@"
 }
 
+notes() {
+
+ DATA_DIR="/data/Notes"
+ LOG_FILE="$DATA_DIR/apps.txt"
+
+    # 1. Ensure the directory exists
+    if [ ! -d "$DATA_DIR" ]; then
+        sudo mkdir -p "$DATA_DIR"
+        sudo chown $(whoami):$(whoami) "$DATA_DIR"
+    fi
+
+    # 2. Create or append to log file
+    touch "$LOG_FILE"
+
+    # 3. Loop over arguments (installed apps) and write them to the log
+    for pkg in "$@"; do
+        echo "$pkg" >> "$LOG_FILE"
+    done
+}

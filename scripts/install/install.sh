@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/usr/bin/env bash
 
 # 1. Verification
 if [ "$(cat /sys/firmware/efi/fw_platform_size)" != "64" ]; then
@@ -21,7 +21,7 @@ if [ -f /mnt/boot/amd-ucode.img ]; then
 rm -rf /mnt/boot/amd-ucode.img || exit 1
 fi
 
-./pacstrap.sh
+./pacstrap_base_packages.sh
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
@@ -59,11 +59,12 @@ systemctl enable reflector.timer
 systemctl enable logrotate logrotate.timer
 systemctl enable fstrim.timer
 systemctl enable write-cache-disabler
-systemctl enable systemd-zram-setup@zram0.service
+systemctl start systemd-zram-setup@zram0.service
 
 echo 'export ANV_DEBUG=video-decode,video-encode' > /etc/profile.d/environment-variables.sh
 chmod 644 /etc/profile.d/environment-variables.sh
 EOF
+
 
 # 6. Cleanup
 echo "Installation complete. Rebooting is recommended. Check FSTAB at /mnt/etc/fstab, run arch-chroot /mnt, then passwd for setting root password."
