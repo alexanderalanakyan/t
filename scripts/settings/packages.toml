@@ -94,7 +94,7 @@ packages = ["flatpak"]
 packages = ["tuned", "nftables", "upower"]
 
 [user.apps]
-packages = [ "golazo"]
+packages = [ "golazo", "qbittorrent"]
 
 [user.apps.utils]
 packages = [ "mission-center"]
@@ -201,6 +201,9 @@ packages=["brother-hl2270dw"]
 
 [user.aur.desktop.extra]
 packages=["journalctl-desktop-notification"]
+
+[user.aur.desktop.util.extra]
+packages=["neo"]
 
 [user.notes]
 packages=["yay"]
