@@ -61,3 +61,12 @@ cat > /mnt/etc/NetworkManager/conf.d/powersave.conf <<EOF
 [connection]
 wifi.powersave=2
 EOF
+cat > /mnt/etc/NetworkManager/conf.d/dns.conf <<EOF
+[main]
+dns=dnsmasq
+EOF
+mkdir -p /mnt/etc/NetworkManager/dnsmasq.d/
+cat > /mnt/etc/NetworkManager/dnsmasq.d/cache.conf <<EOF
+cache-size=10000
+no-negcache
+EOF
