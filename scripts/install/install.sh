@@ -61,8 +61,6 @@ systemctl enable fstrim.timer
 systemctl enable write-cache-disabler
 systemctl start systemd-zram-setup@zram0.service
 
-echo 'export ANV_DEBUG=video-decode,video-encode' > /etc/profile.d/environment-variables.sh
-chmod 644 /etc/profile.d/environment-variables.sh
 EOF
 
 
