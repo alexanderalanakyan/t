@@ -115,6 +115,8 @@ packages = [
   "nnn",
   "broot"
 ]
+[user.utils.graphics]
+packages = ["imagemagick"]
 
 [user.utils.network]
 packages = [
@@ -133,6 +135,7 @@ packages = ["zsh"]
 
 [user.appearance.shell]
 packages = ["starship"]
+
 [user.utils.shell]
 packages = [
   "mcfly",
