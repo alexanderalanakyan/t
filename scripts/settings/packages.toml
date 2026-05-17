@@ -41,24 +41,20 @@ packages = [
   "noto-fonts-extra",
   "noto-fonts-cjk",
   "noto-fonts-emoji",
-  "noto-fonts-symbols",
 
   # Coding / Monospaced fonts
   "ttf-jetbrains-mono-nerd",
   "ttf-fira-code",
-  "ttf-dejavu-sans-mono",
-  "ttf-source-code-pro",
+  "ttf-dejavu-nerd",
 
   # Serif / Sans-serif for general UI
   "ttf-roboto",
-  "ttf-ubuntu",
+  "ttf-ubuntu-font-family",
   "ttf-liberation",
-  "ttf-cantarell",
-  "ttf-droid",
+  "cantarell-fonts",
 
   # Optional display / icon fonts
-  "ttf-font-awesome",
-  "ttf-material-design-icons"
+  "ttf-font-awesome"
 ]
 
 [system.base]
@@ -96,6 +92,9 @@ packages = ["flatpak"]
 [system.services]
 packages = ["tuned", "nftables", "upower"]
 
+[user.apps]
+packages = [ "golazo
+]
 [user.flathub]
 packages = [
   "com.spotify.Client",
@@ -181,8 +180,6 @@ packages=["quickshell"]
 [user.screenshot]
 packages=["grim", "slurp"] 
 
-[user.irc]
-packages=["weechat"]
 
 [user.aur.desktop.applauncher]
 packages = ["vicinae-bin"]
