@@ -47,12 +47,14 @@ packages = [
   "ttf-jetbrains-mono-nerd",
   "ttf-fira-code",
   "ttf-dejavu-nerd",
+  "ttf-victor-mono-nerd",
 
   # Serif / Sans-serif for general UI
   "ttf-roboto",
   "ttf-ubuntu-font-family",
   "ttf-liberation",
   "cantarell-fonts",
+  "powerline-fonts"
 
   # Optional display / icon fonts
   "ttf-font-awesome"
