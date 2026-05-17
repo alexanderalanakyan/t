@@ -69,3 +69,8 @@ try:
     check=True, text=True)
 except Exception:
     print(traceback.format_exc())
+
+with open("../settings/settings.ini", "w") as cfgfile:
+    config["main"]["userdone"] = "true"
+    config.write(cfgfile)
+print("All done with user installation! Everything should now be installed, if there were any errors just report them.")
