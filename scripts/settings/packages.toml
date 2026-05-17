@@ -8,6 +8,7 @@ packages = [
   "man-pages",
   "nvim",
   "networkmanager",
+  "dnsmasq",
   "efibootmgr",
   "grub",
   "mesa"
