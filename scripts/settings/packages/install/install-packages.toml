@@ -1,0 +1,36 @@
+[base]
+packages = [
+  "linux",
+  "linux-lts",
+  "linux-firmware",
+  "sof-firmware",
+  "man-db",
+  "man-pages",
+  "nvim",
+  "networkmanager",
+  "dnsmasq",
+  "efibootmgr",
+  "grub",
+  "mesa"
+]
+
+[base.cpu.amd]
+packages = ["amd-ucode"]
+
+[base.gpu.intel]
+packages = [
+  "vulkan-intel",
+  "intel-media-driver",
+  "vpl-gpu-rt",
+  "libva-utils"
+]
+
+[base.extra]
+packages = [
+  "zram-generator",
+  "reflector",
+  "logrotate",
+  "pacutils",
+  "fwupd",
+  "pacman-contrib"
+]

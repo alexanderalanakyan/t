@@ -1,0 +1,60 @@
+
+
+[system.fonts]
+packages = [
+  # Noto family (all languages + symbols)
+  "noto-fonts",
+  "noto-fonts-extra",
+  "noto-fonts-cjk",
+  "noto-fonts-emoji",
+
+  # Coding / Monospaced fonts
+  "ttf-jetbrains-mono-nerd",
+  "ttf-fira-code",
+  "ttf-dejavu-nerd",
+  "ttf-victor-mono-nerd",
+
+  # Serif / Sans-serif for general UI
+  "ttf-roboto",
+  "ttf-ubuntu-font-family",
+  "ttf-liberation",
+  "cantarell-fonts",
+  "powerline-fonts",
+
+  # Optional display / icon fonts
+  "ttf-font-awesome"
+]
+
+[system.base]
+packages = [
+  "sudo",
+  "xdg-user-dirs",
+  "git",
+  "base-devel",
+  "xdg-utils",
+  "scdoc"
+]
+
+
+[system.terminal]
+packages = ["kitty"]
+
+[system.audio]
+packages = [
+  "pipewire",
+  "wireplumber",
+  "pipewire-alsa",
+  "pipewire-pulse",
+  "pipewire-audio",
+  "pipewire-jack"
+]
+
+[system.network]
+packages = ["bluez", "bluez-utils"]
+
+[system.apps]
+packages = ["flatpak"]
+
+[system.services]
+packages = ["tuned", "nftables", "upower"]
+

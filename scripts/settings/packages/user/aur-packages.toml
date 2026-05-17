@@ -1,0 +1,14 @@
+[user.aur.desktop.applauncher]
+packages = ["vicinae-bin"]
+
+[user.aur.printers.drivers]
+packages=["brother-hl2270dw"]
+
+[user.aur.desktop.extra]
+packages=["journalctl-desktop-notification"]
+
+[user.aur.desktop.util.extra]
+packages=["neo"]
+
+[user.aur.apps]
+packages=["golazo"]

@@ -1,0 +1,6 @@
+[user.flathub]
+packages = [
+  "com.spotify.Client",
+  "app.zen_browser.zen",
+  "com.vscodium.codium"
+]

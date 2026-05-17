@@ -5,12 +5,7 @@ set -euo pipefail
 
 systemctl --user enable --now hyprpolkitagent pipewire pipewire-pulse wireplumber xdg-user-dirs gcr-ssh-agent.socket
 
-if [ ! -f "$HOME/.local/bin/oh-my-posh" ]; then
-    echo "Installing Oh My Posh..."
-    curl -s https://ohmyposh.dev/install.sh | bash -s
-else
-    echo "Oh My Posh already installed, skipping download."
-fi
+
 dots_enabled=$(python3 <<'EOF'
 import configparser
 
