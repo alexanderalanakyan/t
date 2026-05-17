@@ -92,8 +92,11 @@ packages = ["flatpak"]
 packages = ["tuned", "nftables", "upower"]
 
 [user.apps]
-packages = [ "golazo
-]
+packages = [ "golazo"]
+
+[user.apps.utils]
+packages = [ "mission-center"]
+
 [user.flathub]
 packages = [
   "com.spotify.Client",
