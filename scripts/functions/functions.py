@@ -8,7 +8,6 @@ def printSettings():
         print(f"{k} = {v}")
 
 def pac(package_names):
-    print(getpass.getuser())
     if getpass.getuser() == "root":
         command = ["pacman", "-S", "--needed", "--noconfirm",] + package_names
     elif shutil.which("sudo").find("sudo") != -1:
