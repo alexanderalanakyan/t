@@ -68,8 +68,6 @@ packages = [
   "scdoc"
 ]
 
-[system.shell]
-packages = ["fish"]
 
 [system.terminal]
 packages = ["kitty"]
@@ -127,6 +125,11 @@ packages = [
   "tldr"
 ]
 
+[user.shell]
+packages = ["zsh"]
+
+[user.appearance.shell]
+packages = ["starship"]
 [user.utils.shell]
 packages = [
   "mcfly",
@@ -192,4 +195,4 @@ packages=["brother-hl2270dw"]
 packages=["journalctl-desktop-notification"]
 
 [user.notes]
-packages=["yay", "oh-my-posh"]
+packages=["yay"]
