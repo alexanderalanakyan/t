@@ -76,7 +76,15 @@ try:
 except Exception:
     exit()
 
-with open("../settings/settings.ini", "w") as cfgfile:
-    config["main"]["userdone"] = "true"
-    config.write(cfgfile)
+
+try:
+    with open("../settings/settings.ini", "w") as file:
+        config["main"]["userdone"] = "true"
+        config.write(file)
+except PermissionError as e:
+    print(f"You seemingly dont have permission to access {e.filename}... \n")
+    print(traceback.format_exc)
+    raise SystemError
+except Exception as e:
+    exit()
 print("All done with user installation! Everything should now be installed, if there were any errors just report them.")
